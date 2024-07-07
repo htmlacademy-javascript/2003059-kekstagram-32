@@ -66,7 +66,7 @@ const generateRandomId = createIdGenerator();
 const createMessage = () => Array.from(
   {length: getRandomInteger(MESSAGE_MIN_COUNT, MESSAGE_MAX_COUNT)},
   () => getRandomArrayElement(MESSAGE_TEXT),
-);
+).join(' ');
 
 const createComment = () => ({
   id: generateRandomId(),

@@ -30,8 +30,8 @@ const bigPictureOpen = (picture) => {
   bigPictureImg.src = picture.url;
   bigPictureLikes.textContent = picture.likes;
   bigPictureDescripion.textContent = picture.description;
-  // authorAvatar.src = createComment().avatar;
-  // authorAvatar.alt = createComment().name;
+  authorAvatar.src = createComment().avatar;
+  authorAvatar.alt = createComment().name;
 
   createComments(picture.comments);
 

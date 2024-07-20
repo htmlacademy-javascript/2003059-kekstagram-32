@@ -1,6 +1,9 @@
 import { isEscapeKey } from './util.js';
+import { createComments } from './comments.js';
 
 const bigPicture = document.querySelector('.big-picture');
+const bigPicturePreview = bigPicture.querySelector('.big-picture__preview');
+const bigPictureCopy = bigPicturePreview.cloneNode(true);
 
 const bigPictureClose = () => {
   bigPicture.classList.add('hidden');
@@ -15,8 +18,6 @@ const onDocumentEscKeydown = (evt) => {
 };
 
 const bigPictureOpen = (picture) => {
-  const bigPicturePreview = bigPicture.querySelector('.big-picture__preview');
-  const bigPictureCopy = bigPicturePreview.cloneNode(true);
   const bigPictureImg = bigPictureCopy.querySelector('.big-picture__img').querySelector('img');
   const bigPictureLikes = bigPictureCopy.querySelector('.likes-count');
   const bigPictureCancel = bigPictureCopy.querySelector('.big-picture__cancel');
@@ -27,6 +28,8 @@ const bigPictureOpen = (picture) => {
   bigPictureImg.src = picture.url;
   bigPictureLikes.textContent = picture.likes;
   bigPictureDescripion.textContent = picture.description;
+
+  createComments(picture.comments);
 
   bigPictureCancel.addEventListener('click', () => {
     bigPictureClose();
@@ -40,4 +43,4 @@ const bigPictureOpen = (picture) => {
   document.addEventListener('keydown', onDocumentEscKeydown);
 };
 
-export { bigPictureOpen };
+export { bigPictureOpen, bigPictureCopy };

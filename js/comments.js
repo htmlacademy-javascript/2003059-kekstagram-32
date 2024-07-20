@@ -1,17 +1,62 @@
+import { bigPictureCopy } from './big-picture.js';
 
-// Количество показанных комментариев подставьте как текстовое содержание элемента .social__comment-shown-count.
+const COMMENTS_SHOWN_COUNT_CURRENT = 5;
 
-// Общее количество комментариев к фотографии comments подставьте как текстовое содержание элемента .social__comment-total-count.
+const showCountComments = (comments) => {
+  const commentsContainer = bigPictureCopy.querySelector('.social__comments');
+  const commentShownCount = bigPictureCopy.querySelector('.social__comment-shown-count');
+  const commentTotalCount = bigPictureCopy.querySelector('.social__comment-total-count');
+  const commentsLoader = bigPictureCopy.querySelector('.comments-loader');
 
-// Список комментариев под фотографией: комментарии должны вставляться в блок .social__comments. Разметка каждого комментария должна выглядеть так:
+  if (comments.length <= commentsContainer.childElementCount) {
+    commentsLoader.classList.add('hidden');
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
 
-// <li class="social__comment">
-//   <img
-//     class="social__picture"
-//     src="{{аватар}}"
-//     alt="{{имя комментатора}}"
-//     width="35" height="35">
-//   <p class="social__text">{{текст комментария}}</p>
-// </li>
+  commentShownCount.textContent = commentsContainer.childElementCount;commentTotalCount.textContent = comments.length;
+};
 
-// После открытия окна спрячьте блоки счётчика комментариев .social__comment-count и загрузки новых комментариев .comments-loader, добавив им класс hidden, с ними мы разберёмся позже, в другом домашнем задании.
+
+const createCommentItem = (user) => {
+  const item = document.createElement('li');
+  const itemPicture = document.createElement('img');
+  const itemText = document.createElement('p');
+
+  item.classList.add('social__comment');
+  itemPicture.classList.add('social__picture');
+  itemText.classList.add('social__text');
+
+  itemPicture.src = user.avatar;
+  itemPicture.alt = user.name;
+  itemText.textContent = user.message;
+
+  item.append(itemPicture, itemText);
+
+  return item;
+};
+
+const addNextComments = (comments, shownComments) => {
+  const commentsContainer = bigPictureCopy.querySelector('.social__comments');
+  comments.slice(shownComments - COMMENTS_SHOWN_COUNT_CURRENT, shownComments).forEach((comment) => {
+    commentsContainer.append(createCommentItem(comment));
+  });
+  showCountComments(comments);
+};
+
+const createComments = (comments, shownComments) => {
+  const commentsContainer = bigPictureCopy.querySelector('.social__comments');
+  const commentsLoader = bigPictureCopy.querySelector('.comments-loader');
+
+  shownComments = COMMENTS_SHOWN_COUNT_CURRENT;
+
+  commentsContainer.innerHTML = '';
+
+  addNextComments(comments, shownComments);
+
+  commentsLoader.addEventListener('click', () => {
+    addNextComments(comments, shownComments += COMMENTS_SHOWN_COUNT_CURRENT);
+  });
+};
+
+export { createComments };

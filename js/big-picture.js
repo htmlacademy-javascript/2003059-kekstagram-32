@@ -1,5 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { createComments } from './comments.js';
+import { createComment } from './data.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPicturePreview = bigPicture.querySelector('.big-picture__preview');
@@ -22,12 +23,15 @@ const bigPictureOpen = (picture) => {
   const bigPictureLikes = bigPictureCopy.querySelector('.likes-count');
   const bigPictureCancel = bigPictureCopy.querySelector('.big-picture__cancel');
   const bigPictureDescripion = bigPictureCopy.querySelector('.social__caption');
+  const authorAvatar = bigPictureCopy.querySelector('.social__header').querySelector('img');
 
   bigPicturePreview.remove();
 
   bigPictureImg.src = picture.url;
   bigPictureLikes.textContent = picture.likes;
   bigPictureDescripion.textContent = picture.description;
+  authorAvatar.src = createComment().avatar;
+  authorAvatar.alt = createComment().name;
 
   createComments(picture.comments);
 

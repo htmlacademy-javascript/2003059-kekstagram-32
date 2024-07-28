@@ -1,6 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { resetScale } from './scale.js';
-import { init as initEffect, reset as resetEffect } from './effect.js';
+import { resetEffect, initEffect } from './effect.js';
 
 const HASHTAG_MAX_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;

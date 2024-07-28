@@ -65,17 +65,11 @@ const effectToSliderOptions = {
 };
 
 const uploadElement = document.querySelector('.img-upload');
-//modalElement
 const uploadPreview = uploadElement.querySelector('.img-upload__preview').querySelector('img');
-//imageElement
 const effects = uploadElement.querySelector('.effects');
-//effectsElement
 const effectLevelContainer = uploadElement.querySelector('.img-upload__effect-level');
-//sliderContainerElement
 const effectLevelSlider = uploadElement.querySelector('.effect-level__slider');
-//sliderElement
 const effectLevelValue = uploadElement.querySelector('.effect-level__value');
-//effectLevelElement
 
 let currentEffect = Effect.DEFAULT;
 
@@ -144,7 +138,7 @@ const setEffect = (effect) => {
   setImageStyle();
 };
 
-const reset = () => {
+const resetEffect = () => {
   setEffect(Effect.DEFAULT);
 };
 
@@ -152,9 +146,9 @@ const onEffectChange = (evt) => {
   setEffect(evt.target.value);
 };
 
-const init = () => {
+const initEffect = () => {
   createSlider(effectToSliderOptions[currentEffect]);
   effects.addEventListener('change', onEffectChange);
 };
 
-export { init, reset };
+export { resetEffect, initEffect };

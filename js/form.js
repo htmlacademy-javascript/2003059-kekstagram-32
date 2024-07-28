@@ -1,4 +1,6 @@
 import { isEscapeKey } from './util.js';
+import { resetScale } from './scale.js';
+import { init as initEffect, reset as resetEffect } from './effect.js';
 
 const HASHTAG_MAX_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -29,6 +31,8 @@ const openModal = () => {
 
 const closeModal = () => {
   uploadForm.reset();
+  resetScale();
+  resetEffect();
   pristine.reset();
   uploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
@@ -78,16 +82,16 @@ pristine.addValidator(
 
 pristine.addValidator(
   uploadHashtagField,
-  hasUniqueHashtags,
-  ErrorText.NOT_UNIQUE,
+  hasValidHashtags,
+  ErrorText.INVALID_PATTERN,
   2,
   true
 );
 
 pristine.addValidator(
   uploadHashtagField,
-  hasValidHashtags,
-  ErrorText.INVALID_PATTERN,
+  hasUniqueHashtags,
+  ErrorText.NOT_UNIQUE,
   1,
   true
 );
@@ -95,3 +99,4 @@ pristine.addValidator(
 uploadFileField.addEventListener('change', onFileInputChange);
 uploadCancelButton.addEventListener('click', onCancelButtonClick);
 uploadForm.addEventListener('submit', onFormSubmit);
+initEffect();

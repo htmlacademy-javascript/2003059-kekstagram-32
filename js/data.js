@@ -70,4 +70,4 @@ const getPictures = () => Array.from(
   (_, index) => createPicture(index + 1)
 );
 
-export { getPictures, createComment };
+export { getPictures };

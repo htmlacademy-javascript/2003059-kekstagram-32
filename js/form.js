@@ -20,7 +20,7 @@ const uploadCancelButton = uploadForm.querySelector('.img-upload__cancel');
 const uploadFileField = uploadForm.querySelector('.img-upload__input');
 const uploadHashtagField = uploadForm.querySelector('.text__hashtags');
 const uploadCommentField = uploadForm.querySelector('.text__description');
-const uploadButton = uploadForm.querySelector('img-upload__submit');
+const uploadButton = uploadForm.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',

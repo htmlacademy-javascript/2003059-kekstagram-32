@@ -7,7 +7,11 @@ const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
 const ErrorText = {
   INVALID_COUNT: `Разрешено не более ${HASHTAG_MAX_COUNT} хэштегов`,
   NOT_UNIQUE: 'Хэштег должен быть уникальным',
-  INVALID_PATTERN: 'Некорректный Хэштег',
+  INVALID_PATTERN: 'Некорректный хэштег',
+};
+const UploadButtonText = {
+  DEFAULT: 'Опубликовать',
+  SUBMITTING: 'Отправляю...',
 };
 
 const uploadForm = document.querySelector('.img-upload__form');
@@ -16,6 +20,7 @@ const uploadCancelButton = uploadForm.querySelector('.img-upload__cancel');
 const uploadFileField = uploadForm.querySelector('.img-upload__input');
 const uploadHashtagField = uploadForm.querySelector('.text__hashtags');
 const uploadCommentField = uploadForm.querySelector('.text__description');
+const uploadButton = uploadForm.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -39,6 +44,11 @@ const closeModal = () => {
   document.removeEventListener('keydown', onDocumentEscKeydown);
 };
 
+const toggleUploadButton = (isDisabled) => {
+  uploadButton.disabled = isDisabled;
+  uploadButton.textContent = isDisabled ? UploadButtonText.SUBMITTING : UploadButtonText.DEFAULT;
+};
+
 const isTextFieldFocused = () => document.activeElement === uploadHashtagField || document.activeElement === uploadCommentField;
 
 const normalizeHashtags = (hashtags) => hashtags.trim().split(' ').filter((hashtag) => Boolean(hashtag.length));
@@ -52,8 +62,10 @@ const hasUniqueHashtags = (value) => {
   return lowerCaseHashtags.length === new Set(lowerCaseHashtags).size;
 };
 
+const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
+
 function onDocumentEscKeydown (evt) {
-  if (isEscapeKey(evt) && !isTextFieldFocused()) {
+  if (isEscapeKey(evt) && !isTextFieldFocused() && !isErrorMessageShown) {
     evt.preventDefault();
     closeModal();
   }
@@ -67,9 +79,17 @@ const onFileInputChange = () => {
   openModal();
 };
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+const setOnFormSubmit = (callback) => {
+  uploadForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      toggleUploadButton(true);
+      await callback(new FormData(uploadForm));
+      toggleUploadButton();
+    }
+  });
 };
 
 pristine.addValidator(
@@ -98,5 +118,7 @@ pristine.addValidator(
 
 uploadFileField.addEventListener('change', onFileInputChange);
 uploadCancelButton.addEventListener('click', onCancelButtonClick);
-uploadForm.addEventListener('submit', onFormSubmit);
+uploadForm.addEventListener('submit', setOnFormSubmit);
 initEffect();
+
+export { setOnFormSubmit, closeModal };

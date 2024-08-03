@@ -65,7 +65,7 @@ const hasUniqueHashtags = (value) => {
 const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
 
 function onDocumentEscKeydown (evt) {
-  if (isEscapeKey(evt) && !isTextFieldFocused() && !isErrorMessageShown) {
+  if (isEscapeKey(evt) && !isTextFieldFocused() && !isErrorMessageShown()) {
     evt.preventDefault();
     closeModal();
   }
@@ -118,7 +118,6 @@ pristine.addValidator(
 
 uploadFileField.addEventListener('change', onFileInputChange);
 uploadCancelButton.addEventListener('click', onCancelButtonClick);
-uploadForm.addEventListener('submit', setOnFormSubmit);
 initEffect();
 
 export { setOnFormSubmit, closeModal };

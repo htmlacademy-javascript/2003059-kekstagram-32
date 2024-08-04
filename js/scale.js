@@ -14,17 +14,14 @@ const scaleImage = (value) => {
   scaleControlValue.value = `${value}%`;
 };
 
-const onControlSmallerClick = () => {
-  scaleImage(
-    Math.max(parseInt(scaleControlValue.value, 10) - SCALE_STEP, SCALE_MIN)
-  );
+const changeScale = (change) => {
+  const currentValue = parseInt(scaleControlValue.value, 10);
+  const newValue = Math.min(Math.max(currentValue + change, SCALE_MIN), SCALE_MAX);
+  scaleImage(newValue);
 };
 
-const onControlBiggerClick = () => {
-  scaleImage(
-    Math.min(parseInt(scaleControlValue.value, 10) + SCALE_STEP, SCALE_MAX)
-  );
-};
+const onControlSmallerClick = () => changeScale(-SCALE_STEP);
+const onControlBiggerClick = () => changeScale(SCALE_STEP);
 
 const resetScale = () => scaleImage(SCALE_DEFAULT);
 

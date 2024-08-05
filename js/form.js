@@ -4,6 +4,7 @@ import { resetEffect, initEffect } from './effect.js';
 
 const HASHTAG_MAX_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+const VALID_FORMAT = ['jpeg', 'jpg', 'png'];
 const ErrorText = {
   INVALID_COUNT: `Разрешено не более ${HASHTAG_MAX_COUNT} хэштегов`,
   NOT_UNIQUE: 'Хэштег должен быть уникальным',
@@ -21,6 +22,8 @@ const uploadFileField = uploadForm.querySelector('.img-upload__input');
 const uploadHashtagField = uploadForm.querySelector('.text__hashtags');
 const uploadCommentField = uploadForm.querySelector('.text__description');
 const uploadButton = uploadForm.querySelector('.img-upload__submit');
+const uploadPreview = uploadForm.querySelector('.img-upload__preview img');
+const effectsPreview = uploadForm.querySelectorAll('.effects__preview');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -51,6 +54,11 @@ const toggleUploadButton = (isDisabled) => {
 
 const isTextFieldFocused = () => document.activeElement === uploadHashtagField || document.activeElement === uploadCommentField;
 
+const isValidFormat = (file) => {
+  const fileName = file.name.toLowerCase();
+  return VALID_FORMAT.some((it) => fileName.endsWith(it));
+};
+
 const normalizeHashtags = (hashtags) => hashtags.trim().split(' ').filter((hashtag) => Boolean(hashtag.length));
 
 const hasValidHashtags = (value) => normalizeHashtags(value).every((hashtag) => VALID_SYMBOLS.test(hashtag));
@@ -76,6 +84,14 @@ const onCancelButtonClick = () => {
 };
 
 const onFileInputChange = () => {
+  const file = uploadFileField.files[0];
+
+  if (file && isValidFormat(file)) {
+    uploadPreview.src = URL.createObjectURL(file);
+    effectsPreview.forEach((preview) => {
+      preview.style.backgroundImage = `url('${uploadPreview.src}')`;
+    });
+  }
   openModal();
 };
 

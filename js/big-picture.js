@@ -1,5 +1,7 @@
 import { isEscapeKey } from './util.js';
 
+const COMMENTS_COUNT_TO_SHOW = 5;
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPicturePreview = bigPicture.querySelector('.big-picture__preview');
 const bigPictureCopy = bigPicturePreview.cloneNode(true);
@@ -9,7 +11,6 @@ const commentShownCount = bigPictureCopy.querySelector('.social__comment-shown-c
 const commentTotalCount = bigPictureCopy.querySelector('.social__comment-total-count');
 const commentsLoader = bigPictureCopy.querySelector('.comments-loader');
 
-const COMMENTS_COUNT_TO_SHOW = 5;
 let commentsShown = 0;
 let comments = [];
 

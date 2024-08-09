@@ -4,7 +4,7 @@ import { resetEffect, initEffect } from './effect.js';
 
 const HASHTAG_MAX_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-const VALID_FORMAT = ['jpeg', 'jpg', 'png'];
+const VALID_FORMATS = ['jpeg', 'jpg', 'png'];
 const ErrorText = {
   INVALID_COUNT: `Разрешено не более ${HASHTAG_MAX_COUNT} хэштегов`,
   NOT_UNIQUE: 'Хэштег должен быть уникальным',
@@ -56,7 +56,7 @@ const isTextFieldFocused = () => document.activeElement === uploadHashtagField |
 
 const isValidFormat = (file) => {
   const fileName = file.name.toLowerCase();
-  return VALID_FORMAT.some((it) => fileName.endsWith(it));
+  return VALID_FORMATS.some((it) => fileName.endsWith(it));
 };
 
 const normalizeHashtags = (hashtags) => hashtags.trim().split(' ').filter((hashtag) => Boolean(hashtag.length));
